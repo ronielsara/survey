@@ -1,4 +1,5 @@
-package surveyApp;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.*;
 
 public class Survey {
@@ -52,13 +53,12 @@ public class Survey {
         for (Question question : questions) {
             System.out.println("Q: " + question.getText());
             System.out.println("[1] Agree  [2] Slightly Agree  [3] Slightly Disagree  [4] Disagree  [5] Skip");
-            System.out.print("Your choice: ");
-            int choice = scanner.nextInt() - 1;
-            scanner.nextLine();
 
-            if (choice < 0 || choice > 4) choice = 4;
+            int choice = getValidIntegerInput(scanner, "Your choice: ", 1, 5) - 1; // Ensures valid input
+
             candidate.answerQuestion(question, choice);
         }
+
     }
 
     public void printSurveyResults() {
@@ -153,4 +153,32 @@ public class Survey {
             }
         }
     }
+    private static String getValidInput(Scanner scanner, String prompt) {
+        String input;
+        do {
+            System.out.print(prompt);
+            input = scanner.nextLine();
+        } while (StringUtils.isBlank(input)); // Using `StringUtils.isBlank()` for validation
+        return input;
+    }
+
+    private static int getValidIntegerInput(Scanner scanner, String prompt, int min, int max) {
+        String input;
+        int number;
+        while (true) {
+            System.out.print(prompt);
+            input = scanner.nextLine();
+            if (StringUtils.isNumeric(input)) {
+                number = Integer.parseInt(input);
+                if (number >= min && number <= max) {
+                    return number;
+                }
+            }
+            System.out.println("Invalid input. Please enter a number between " + min + " and " + max + ".");
+        }
+    }
+    public int getQuestionsSize() {
+        return questions.size();
+    }
+
 }

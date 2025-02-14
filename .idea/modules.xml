@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SurveyApp.iml" filepath="$PROJECT_DIR$/SurveyApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/survey.iml" filepath="$PROJECT_DIR$/survey.iml" />
     </modules>
   </component>
 </project>

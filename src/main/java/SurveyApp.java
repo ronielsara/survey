@@ -1,5 +1,5 @@
-package surveyApp;
 import java.util.*;
+import org.apache.commons.lang3.StringUtils;
 
 public class SurveyApp {
     public static void main(String[] args) {
@@ -31,39 +31,33 @@ public class SurveyApp {
             System.out.println("10. List Questions");
             System.out.println("11. Exit");
             System.out.print("Choose an option: ");
-            int option = scanner.nextInt();
+            int option = getValidIntegerInput(scanner, "Choose an option: ", 1, 11);
             scanner.nextLine();
 
             switch (option) {
                 case 1 -> {
-                    System.out.print("Enter First Name: ");
-                    String firstName = scanner.nextLine();
-                    System.out.print("Enter Last Name: ");
-                    String lastName = scanner.nextLine();
-                    System.out.print("Enter Email: ");
-                    String email = scanner.nextLine();
-                    System.out.print("Enter Phone Number: ");
-                    String phone = scanner.nextLine();
+                    String firstName = getValidInput(scanner, "Enter First Name: ");
+                    String lastName = getValidInput(scanner, "Enter Last Name: ");
+                    String email = getValidInput(scanner, "Enter Email: ");
+                    String phone = getValidInput(scanner, "Enter Phone Number: ");
 
                     Candidate candidate = new Candidate(firstName, lastName, email, phone);
                     survey.takeSurvey(candidate, scanner);
+
                 }
                 case 2 -> survey.printSurveyResults();
                 case 3 -> survey.findMostGivenAnswer();
                 case 4 -> {
-                    System.out.print("Enter candidate name: ");
-                    String candidateName = scanner.nextLine();
+                    String candidateName = getValidInput(scanner, "Enter candidate name: ");
                     survey.findCandidateAnswers(candidateName);
                 }
                 case 5 -> survey.findMostActiveCandidate();
                 case 6 -> {
-                    System.out.print("Enter new question: ");
-                    String newQuestion = scanner.nextLine();
+                    String newQuestion = getValidInput(scanner, "Enter new question: ");
                     survey.addQuestion(newQuestion);
                 }
                 case 7 -> {
-                    System.out.print("Enter question to remove: ");
-                    int removeQuestion = scanner.nextInt();
+                    int removeQuestion = getValidIntegerInput(scanner, "Enter question number to remove: ", 1, survey.getQuestionsSize());
                     survey.removeQuestion(removeQuestion);
                 }
                 case 8 -> survey.removeLowResponseQuestions();
@@ -75,6 +69,30 @@ public class SurveyApp {
                 }
                 default -> System.out.println("Invalid option. Try again.");
             }
+        }
+    }
+    private static String getValidInput(Scanner scanner, String prompt) {
+        String input;
+        do {
+            System.out.print(prompt);
+            input = scanner.nextLine();
+        } while (StringUtils.isBlank(input)); // Using `StringUtils.isBlank()` for validation
+        return input;
+    }
+
+    private static int getValidIntegerInput(Scanner scanner, String prompt, int min, int max) {
+        String input;
+        int number;
+        while (true) {
+            System.out.print(prompt);
+            input = scanner.nextLine();
+            if (StringUtils.isNumeric(input)) {
+                number = Integer.parseInt(input);
+                if (number >= min && number <= max) {
+                    return number;
+                }
+            }
+            System.out.println("Invalid input. Please enter a number between " + min + " and " + max + ".");
         }
     }
 }
