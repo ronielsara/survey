@@ -1,4 +1,3 @@
-package surveyApp;
 import java.util.*;
 
 public class Question {
